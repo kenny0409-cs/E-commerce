@@ -1,5 +1,5 @@
 import express from "express";
-import { DeleteUser, forgotPassword, getUserDetail, getUserProfile, getallUsers, loginUser, logoutUser, registerUser, resetPassword, updatePassword, updateProfile, updateUserDetail } from "../controllers/authControllers.js";
+import { DeleteUser, forgotPassword, getUserDetail, getUserProfile, getallUsers, loginUser, logoutUser, registerUser, resetPassword, updatePassword, updateProfile, updateUserDetail, uploadAvatar } from "../controllers/authControllers.js";
 import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -13,6 +13,8 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/me").get(isAuthenticatedUser,getUserProfile);
 router.route("/password/update").put(isAuthenticatedUser, updatePassword);
 router.route("/me/update").put(isAuthenticatedUser,updateProfile);
+router.route("/me/upload_avatar").put(isAuthenticatedUser, uploadAvatar);
+
 router.route("/admin/users").get(isAuthenticatedUser, authorizeRoles("admin"),getallUsers);
 
 

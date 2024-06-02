@@ -8,11 +8,9 @@ export const getProducts = catchAsyncErrors(async(req,res,next) =>{
     
     const maxresPerPage =4;
     const apiFilters= new APIFilters(Product, req.query).search().filters();
-    console.log(req.query);
-    console.log(req.params._id);
     let products = await apiFilters.query;
     let filteredProductsCount = products.length;
-
+    
     apiFilters.pagination(maxresPerPage);
     //using clone cause we have to run it for the second time 
     products = await apiFilters.query.clone();
