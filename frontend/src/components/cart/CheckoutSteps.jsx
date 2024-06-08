@@ -5,12 +5,12 @@ const CheckoutSteps = ({shipping, confirmOrder, payment}) => {
 
 
     return (
-      <>
-        <div className="checkout-progress d-flex justify-content-center mt-5 row">
+      
+        <div className="checkout-progress d-flex justify-content-center mt-5 ">
         {shipping ? (
           <Link
-          href="/shipping"
-          className="float-right mt-2 mt-md-0 col-12 col-md-3 col-lg-2"
+          to="/shipping"
+          className="float-right"
         >
           <div className="triangle2-active"></div>
           <div className="step active-step">Shipping</div>
@@ -18,8 +18,8 @@ const CheckoutSteps = ({shipping, confirmOrder, payment}) => {
         </Link>
         ) : (
         <Link
-          href="#!"
-          className="float-right mt-2 mt-md-0 col-12 col-md-3 col-lg-2"
+          to="#!"
+          className="float-right "
           disabled
         >
           <div className="triangle2-incomplete"></div>
@@ -27,35 +27,24 @@ const CheckoutSteps = ({shipping, confirmOrder, payment}) => {
           <div className="triangle-incomplete"></div>
         </Link>)}
         
-  
-        
-        
-  
         {confirmOrder ? (
-        <Link
-          href="/confirm_order"
-          className="float-right mt-2 mt-md-0 col-12 col-md-4 col-lg-3"
-        >
+        <Link to="/confirm_order" className="float-right">
           <div className="triangle2-active"></div>
           <div className="step active-step">Confirm Order</div>
           <div className="triangle-active"></div>
-        </Link>)
-        : (
-          <Link
-          href="#!"
-          className="float-right mt-2 mt-md-0 col-12 col-md-4 col-lg-3"
-          disabled
-        >
+        </Link>
+        ) : (
+        <Link to="#!" className="float-right" disabled>
           <div className="triangle2-incomplete"></div>
           <div className="step incomplete">Confirm Order</div>
           <div className="triangle-incomplete"></div>
         </Link>
-        )}
+      )}
         
         {payment ?  (
           <Link
-          href="/payment_method"
-          className="float-right mt-2 mt-md-0 col-12 col-md-3 col-lg-2"
+          to="/payment_method"
+          className="float-right "
         >
           <div className="triangle2-active"></div>
           <div className="step active-step">Payment</div>
@@ -63,8 +52,8 @@ const CheckoutSteps = ({shipping, confirmOrder, payment}) => {
         </Link>
         ) : (
         <Link
-          href="#!"
-          className="float-right mt-2 mt-md-0 col-12 col-md-3 col-lg-2"
+          to="#!"
+          className="float-right "
           disabled
         >
           <div className="triangle2-incomplete"></div>
@@ -73,7 +62,6 @@ const CheckoutSteps = ({shipping, confirmOrder, payment}) => {
         </Link>)}
         
       </div>
-    </>
     );
 };
 

@@ -39,8 +39,9 @@ const Header = () => {
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
         <a href="/cart" style={{ textDecoration: "none" }}>
           <span id="cart" className="ms-3">
+            
             {" "}
-            Cart{" "}
+            <i className="fas fa-shopping-cart"/> Cart{" "}
           </span>
           <span className="ms-1" id="cart_count">
             {cartItem?.length}
@@ -69,10 +70,14 @@ const Header = () => {
             className="dropdown-menu w-100"
             aria-labelledby="dropDownMenuButton"
           >
-            <Link className="dropdown-item" to="/admin/dashboard">
+            {/**show dashboard when the user id is an admin */}
+            {user?.role === "admin" && (
+              <Link className="dropdown-item" to="/admin/dashboard">
               {" "}
-              Dashboard{" "}
-            </Link>
+                Dashboard{" "}
+              </Link>
+            )}
+
 
             <Link className="dropdown-item" to="/me/orders">
               {" "}
