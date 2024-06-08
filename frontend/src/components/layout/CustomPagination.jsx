@@ -1,3 +1,7 @@
+//A paging system , for user to see next page items and also for admin look at the other page when creating product
+
+
+
 import React, { useEffect,useState } from "react";
 import { useNavigate,useSearchParams } from "react-router-dom";
 import Pagination from "react-js-pagination";

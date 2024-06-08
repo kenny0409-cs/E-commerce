@@ -4,9 +4,12 @@ import { useGetProductDetailsQuery } from "../../redux/api/productsApi";
 import { toast } from "react-hot-toast";
 import Loader from "../layout/Loader";
 import StarRatings from "react-star-ratings";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartItem } from "../../redux/features/cartSlice";
 import MetaData from "../layout/MetaData";
+import NewReview from "../reviews/NewReview";
+import ListReview from "../reviews/ListReview";
+import NotFound from "../layout/NotFound";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -20,9 +23,9 @@ const ProductDetails = () => {
   const [quantity, setquantity] = useState(1);
 
   const [activeImg, setActiveImg] = useState("");
+  const {isAuthenticated} = useSelector((state) => state.auth);
 
   // set the active image to the first image of the product or a default product image
-
   useEffect(() => {
     setActiveImg(
       product?.images[0]
@@ -61,6 +64,7 @@ const ProductDetails = () => {
     const qty = count.valueAsNumber - 1;
     setquantity(qty);
   };
+
   // add the product to the cart with the given quantity
   const setItemToCart = () => {
     const cartItem = {
@@ -74,6 +78,12 @@ const ProductDetails = () => {
     dispatch(setCartItem(cartItem));
     toast.success("Item added to the Cart");
   };
+
+
+  if(error && error?.status == 404)
+  {
+    return <NotFound />
+  }
 
   // if the product is still loading, show a Loader component
   if (isLoading) return <Loader />;
@@ -149,7 +159,7 @@ const ProductDetails = () => {
           type="button"
           id="cart_btn"
           className="btn btn-primary d-inline ms-4"
-          disabled={product.stock <=0}
+          disabled={product?.stock <=0}
           onClick={setItemToCart}
         >
           Add to Cart
@@ -175,12 +185,17 @@ const ProductDetails = () => {
         <p id="product_seller mb-3">
           Sold by: <strong>{product?.seller}</strong>
         </p>
-
+        
+        {isAuthenticated ? (<NewReview productId={product?._id}/> ):
+          (  
         <div className="alert alert-danger my-5" type="alert">
           Login to post your review.
         </div>
+        )}
       </div>
     </div>
+    {product?.reviews?.length > 0 && (
+        <ListReview reviews={product?.reviews} /> )}
     </>
   );
 };

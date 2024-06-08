@@ -6,6 +6,11 @@ import { connectDatabase } from "./config/dbConnect.js";
 import errorMiddleware from "./middlewares/errors.js";
 import cookieParser from "cookie-parser";
 
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 //Handled Uncaught Exception
 process.on('uncaughtException', (err) => {
     console.log(`Error: ${err}`);
@@ -13,12 +18,23 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-dotenv.config({ path: "backend/config/config.env"});
+if(process.env.NODE_ENV !== "PRODUCTION")
+  {
+    dotenv.config({ path: "backend/config/config.env"});
+  }
+
 
 //connecting to MongoDB
 connectDatabase()
 
-app.use(express.json({limit: "10mb"}));
+app.use(
+    express.json({
+      limit: "10mb",
+      verify: (req, res, buf) => {
+        req.rawBody = buf.toString();
+      },
+    })
+  );
 app.use(cookieParser());
 //import all routes
 import productRoutes from "./routes/products.js";
@@ -28,7 +44,17 @@ import paymentRoutes from "./routes/payment.js";
 app.use("/api/v1", productRoutes);
 app.use("/api/v1",authRoutes);
 app.use("/api/v1",orderRoutes );
-app.use("/api/v1",paymentRoutes)
+app.use("/api/v1",paymentRoutes);
+
+if(process.env.NODE_ENV === "PRODUCTION")
+{
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+ 
+  //for all
+  app.get('*',(req,res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  })
+}
 
 //Using error middleware
 app.use(errorMiddleware);

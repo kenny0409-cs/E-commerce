@@ -11,8 +11,8 @@ const PaymentMethod = () => {
     const [method, setMethod] =useState("");
     const {shippingInfo, cartItem} = useSelector((state) => state.cart);
     const navigate = useNavigate();
-    const [createNewOrder, {isLoading, error, isSuccess}] = useCreateNewOrderMutation()
-    const [stripeCheckoutSession , {data:checkoutData, error: checkoutError}] =useStripeCheckoutSessionMutation();
+    const [createNewOrder, { error, isSuccess}] = useCreateNewOrderMutation()
+    const [stripeCheckoutSession , {data:checkoutData, error: checkoutError, isLoading}] =useStripeCheckoutSessionMutation();
 
 
     useEffect(() => {
@@ -35,10 +35,9 @@ const PaymentMethod = () => {
             toast.error(error?.data?.message);
         }
 
-        if(isSuccess)
-        {
-            navigate("/");
-        }    
+        if (isSuccess) {
+            navigate("/me/orders?order_success=true");
+        }   
     }, [error, isSuccess]);
 
 
@@ -124,7 +123,7 @@ const PaymentMethod = () => {
                     </label>
                 </div>
 
-                <button id="shipping_btn" type="submit" className="btn py-2 w-100">
+                <button id="shipping_btn" type="submit" className="btn py-2 w-100" disabled={isLoading}>
                     CONTINUE
                 </button>
                 </form>

@@ -80,6 +80,7 @@ const Cart = () => {
                         />
                       </div>
                       <div className="col-5 col-lg-3">
+                        {/*Navigate back to the detail of the item from the cart*/}
                         <Link to={`/product/${item?.product}`}>
                           {" "}
                           {item?.name}{" "}

@@ -41,6 +41,11 @@ export const cartSlice = createSlice({
 
             localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
         },
+
+        clearCart: (state, action) => {
+            localStorage.removeItem("cartItem");
+            state.cartItem = [];
+        },
         saveShippingInfo: (state, action) => {
             state.shippingInfo = action.payload;
             
@@ -51,5 +56,5 @@ export const cartSlice = createSlice({
 
 export default cartSlice.reducer;
 
-export const {setCartItem, removeCartItem , saveShippingInfo} = cartSlice.actions;
+export const {setCartItem, removeCartItem ,clearCart, saveShippingInfo} = cartSlice.actions;
 //slice is the collection of reducer logic and then the actions
